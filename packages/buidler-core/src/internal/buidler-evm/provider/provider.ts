@@ -58,6 +58,7 @@ export class BuidlerEVMProvider extends EventEmitter
     private readonly _chainId: number,
     private readonly _networkId: number,
     private readonly _blockGasLimit: number,
+    private readonly _timestamp: number,
     private readonly _throwOnTransactionFailures: boolean,
     private readonly _throwOnCallFailures: boolean,
     private readonly _genesisAccounts: GenesisAccount[] = [],
@@ -156,11 +157,11 @@ export class BuidlerEVMProvider extends EventEmitter
     process.stdout.write(
       // tslint:disable-next-line:prefer-template
       ansiEscapes.cursorHide +
-        ansiEscapes.cursorPrevLine +
-        chalk.green(`${method} (${this._methodCollapsedCount})`) +
-        "\n" +
-        ansiEscapes.eraseEndLine +
-        ansiEscapes.cursorShow
+      ansiEscapes.cursorPrevLine +
+      chalk.green(`${method} (${this._methodCollapsedCount})`) +
+      "\n" +
+      ansiEscapes.eraseEndLine +
+      ansiEscapes.cursorShow
     );
   }
 
@@ -270,6 +271,7 @@ export class BuidlerEVMProvider extends EventEmitter
       this._chainId,
       this._networkId,
       this._blockGasLimit,
+      this._timestamp,
       this._genesisAccounts,
       this._solcVersion,
       compilerInput,

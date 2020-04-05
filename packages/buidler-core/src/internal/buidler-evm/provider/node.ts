@@ -146,10 +146,11 @@ export class BuidlerNode extends EventEmitter {
     chainId: number,
     networkId: number,
     blockGasLimit: number,
+    timestamp: number,
     genesisAccounts: GenesisAccount[] = [],
     solidityVersion?: string,
     compilerInput?: CompilerInput,
-    compilerOutput?: CompilerOutput
+    compilerOutput?: CompilerOutput,
   ): Promise<[Common, BuidlerNode]> {
     const stateTrie = new Trie();
     const putIntoStateTrie = promisify(stateTrie.put.bind(stateTrie));
@@ -225,6 +226,7 @@ export class BuidlerNode extends EventEmitter {
       blockchain,
       genesisAccounts.map(acc => toBuffer(acc.privateKey)),
       new BN(blockGasLimit),
+      new BN(timestamp),
       genesisBlock,
       solidityVersion,
       compilerInput,
@@ -266,6 +268,7 @@ export class BuidlerNode extends EventEmitter {
     private readonly _blockchain: Blockchain,
     localAccounts: Buffer[],
     private readonly _blockGasLimit: BN,
+    private readonly _timestamp: BN,
     genesisBlock: Block,
     solidityVersion?: string,
     compilerInput?: CompilerInput,
@@ -276,6 +279,8 @@ export class BuidlerNode extends EventEmitter {
     this._stateManager = new PStateManager(this._vm.stateManager);
     this._common = this._vm._common as any; // TODO: There's a version mismatch, that's why we cast
     this._initLocalAccounts(localAccounts);
+
+    this._blockTimeOffsetSeconds = _timestamp ? _timestamp : new BN(0);
 
     this._blockHashToTotalDifficulty.set(
       bufferToHex(genesisBlock.hash()),
@@ -1389,14 +1394,14 @@ If you are using a wallet or dapp, try resetting your wallet's accounts.`
     const minDiff = highestFailingEstimation.gten(4_000_000)
       ? 50_000
       : highestFailingEstimation.gten(1_000_000)
-      ? 10_000
-      : highestFailingEstimation.gten(100_000)
-      ? 1_000
-      : highestFailingEstimation.gten(50_000)
-      ? 500
-      : highestFailingEstimation.gten(30_000)
-      ? 300
-      : 200;
+        ? 10_000
+        : highestFailingEstimation.gten(100_000)
+          ? 1_000
+          : highestFailingEstimation.gten(50_000)
+            ? 500
+            : highestFailingEstimation.gten(30_000)
+              ? 300
+              : 200;
 
     if (diff.lten(minDiff)) {
       return lowestSuccessfulEstimation;

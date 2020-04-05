@@ -6,6 +6,7 @@ export const BUIDLEREVM_DEFAULT_GAS_PRICE = 8e9;
 const DEFAULT_BUIDLER_NETWORK_CONFIG: BuidlerNetworkConfig = {
   hardfork: "istanbul",
   blockGasLimit: 9500000,
+  timestamp: 0,
   gas: 9500000,
   gasPrice: BUIDLEREVM_DEFAULT_GAS_PRICE,
   chainId: 31337,

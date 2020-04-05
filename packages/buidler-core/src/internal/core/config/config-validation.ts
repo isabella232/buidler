@@ -35,10 +35,10 @@ function getMessage(e: ValidationError): string {
   return e.message !== undefined
     ? e.message
     : getErrorMessage(
-        getContextPath(e.context),
-        e.value,
-        lastContext.type.name
-      );
+      getContextPath(e.context),
+      e.value,
+      lastContext.type.name
+    );
 }
 
 function getErrorMessage(path: string, value: any, expectedType: string) {
@@ -89,7 +89,8 @@ const BuidlerNetworkConfig = t.type({
   blockGasLimit: optional(t.number),
   throwOnTransactionFailures: optional(t.boolean),
   throwOnCallFailures: optional(t.boolean),
-  loggingEnabled: optional(t.boolean)
+  loggingEnabled: optional(t.boolean),
+  timestamp: optional(t.number)
 });
 
 const HDAccountsConfig = t.type({

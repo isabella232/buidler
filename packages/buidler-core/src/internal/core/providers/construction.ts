@@ -39,6 +39,7 @@ export function createProvider(
       buidlerNetConfig.chainId!,
       buidlerNetConfig.chainId!,
       buidlerNetConfig.blockGasLimit!,
+      buidlerNetConfig.timestamp!,
       buidlerNetConfig.throwOnTransactionFailures!,
       buidlerNetConfig.throwOnCallFailures!,
       buidlerNetConfig.accounts,
